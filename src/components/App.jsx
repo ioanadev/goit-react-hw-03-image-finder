@@ -5,6 +5,8 @@ import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Button } from './ButtonLoadMore/ButtonLoadMore';
 import { Loader } from './Loader/Loader';
 import { Modal } from './Modal/Modal';
+import './App.css';
+import { API_KEY, BASE_URL } from './Api/Api';
 // Componenta Searchbar
 /*class Searchbar extends Component {
   constructor(props) {
@@ -148,13 +150,12 @@ export class App extends Component {
 
   fetchImages = () => {
     if (!this.searchQuery) {
-      return; // Oprire fetch daca query-ul este gol
+      return;
     }
 
     const { page } = this;
-    const API_KEY = '36995967-7696682f503bb4e5597a47b78';
 
-    const url = `https://pixabay.com/api/?q=${this.searchQuery}&page=${page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`;
+    const url = `${BASE_URL}?q=${this.searchQuery}&page=${page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`;
 
     this.setState({ loading: true });
 
@@ -173,15 +174,13 @@ export class App extends Component {
 
   handleSearchSubmit = searchQuery => {
     this.searchQuery = searchQuery;
-    this.page = 1; // Resetam pagina la 1 pentru a incepe de la inceputul rezultatelor
+    this.page = 1;
     this.setState({ images: [] }, this.fetchImages);
   };
 
-  handleLoadMore = () => {
-    this.setState(
-      prevState => ({ page: prevState.page + 1 }),
-      this.fetchImages
-    );
+  handleLoadMore = (page, prevState) => {
+    this.page++;
+    this.fetchImages();
   };
   heandleOpenModal = image => {
     this.setState({ showModal: true, selectedImage: image });
@@ -194,7 +193,7 @@ export class App extends Component {
     const { images, loading, error, showModal, selectedImage } = this.state;
 
     return (
-      <div>
+      <div className="app">
         <Searchbar onSubmit={this.handleSearchSubmit} />
         {loading && <Loader />}
         {error && <div>Error: {error}</div>}

@@ -1,3 +1,5 @@
+import './Modal.css';
+
 import { Component } from 'react';
 // Componenta Modal
 export class Modal extends Component {
@@ -25,7 +27,7 @@ export class Modal extends Component {
         tabIndex={0}
       >
         <div className="modal">
-          <img src={image.largeImageURL} alt="" />
+          <img src={image.largeImageURL} alt="" className="modal-image" />
         </div>
       </div>
     );
